@@ -72,7 +72,7 @@
 
 ​			（2）按照字典序排序
 
-​			（3）RowKey只能存储64K的字节数据					
+​			（3）RowKey只能存储64K的字节数据，一般设计是使用10~100个字节，太大会出现Rowdkey的冗余
 
 ##### 			(2)Column Family & Qualifier
 

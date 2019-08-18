@@ -65,6 +65,15 @@ HBASE_MANAGES_ZK=false
     <name>hbase.zookeeper.quorum</name>
     <value>node02,node03,node04</value>
   </property>
+	
+  <property>
+    <name>hbase.server.thread.wakefrequency</name>
+    <value>1</value>
+  </property>
+  <property>
+    <name>hbase.hregion.memstore.block.multiplier<name>
+    <value>1</value>
+  </property>
 </configuration>
 ```
 

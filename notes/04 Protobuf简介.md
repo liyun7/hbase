@@ -59,6 +59,16 @@ Str，这是一个字符串
  	required string    str = 2;  // str 
  	optional int32     opt = 3;  //optional field
  }
+ 
+ package com.mashibing; 
+ message PhoneDetail 
+ { 
+ 	required string dnum = 1;
+ 	required string length = 2;
+	required string type = 3;
+	required string date = 4;
+ 	
+ }
 ```
 
 ​		一个比较好的习惯是认真对待 proto 文件的文件名。比如将命名规则定于如下：
@@ -91,6 +101,38 @@ Str，这是一个字符串
 ```
  /usr/local/bin/protoc phone.proto --java_out=/root/
 ```
+	JAVA API:
+		插入数据
+		List<Put> puts = new ArrayList<Put>();
+        	for (int i = 0; i < 10; i++) {
+            		String phoneNumber = getNumber("158");
+            		for (int j = 0; j < 100000; j++) {
+               		String dnum = getNumber("777");
+                	String length = String.valueOf(random.nextInt(100));
+                	String date = getDate("2019");
+                	String type = String.valueOf(random.nextInt(2));
+                	//rowkey
+                	String rowKey = phoneNumber+"_"+(Long.MAX_VALUE-sdf.parse(date).getTime());
+
+                	Phone.PhoneDetail.Builder builder = Phone.PhoneDetail.newBuilder();
+                	builder.setDate(date);
+                	builder.setDnum(dnum);
+                	builder.setLength(length);
+                	builder.setType(type);
+                	Put put = new Put(Bytes.toBytes(rowKey));
+                	put.addColumn(Bytes.toBytes("cf"),Bytes.toBytes("phone"),builder.build().toByteArray());
+                	puts.add(put);
+            	}
+        	}
+        	table.put(puts);
+		
+		查询数据
+		Get get = new Get(Bytes.toBytes("15899309685_9223370490668224807"));
+        	Result result = table.get(get);
+        	byte[] bytes = CellUtil.cloneValue(result.getColumnLatestCell(Bytes.toBytes("cf"), Bytes.toBytes("phone")));
+        	Phone.PhoneDetail phoneDetail = Phone.PhoneDetail.parseFrom(bytes);
+        	System.out.println(phoneDetail);
+		
 
 ##### 5、编写 writer 和 Reader
 

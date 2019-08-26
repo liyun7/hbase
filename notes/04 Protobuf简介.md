@@ -19,9 +19,16 @@
  tar -xzf protobuf-2.1.0.tar.gz 
  cd protobuf-2.1.0 
  ./configure --prefix=$INSTALL_DIR 
+ ./configure后显示缺少依赖包：
+ 	yum grouplist
+	yum groupinstall "Development tools"
+	./configure
+	make && make install
+% 
  make 
- make check 
- make install
+ make check (不建议执行，运型慢)
+ make install     
+ %
 ```
 
 ##### 2、关于简单例子的描述
